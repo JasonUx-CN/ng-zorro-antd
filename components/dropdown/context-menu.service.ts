@@ -35,7 +35,8 @@ export class NzContextMenuService {
 
   create(
     $event: MouseEvent | { x: number; y: number },
-    nzDropdownMenuComponent: NzDropdownMenuComponent
+    nzDropdownMenuComponent: NzDropdownMenuComponent,
+    autoClose: Boolean = true
   ): EmbeddedViewRef<NzSafeAny> {
     this.close(true);
     const { x, y } = $event;
@@ -61,7 +62,7 @@ export class NzContextMenuService {
       this.ngZone.runOutsideAngular(() =>
         merge(
           fromEvent<MouseEvent>(document, 'click').pipe(
-            filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+            filter(event => !!this.overlayRef && autoClose && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
             /** handle firefox contextmenu event **/
             filter(event => event.button !== 2)
           ),
